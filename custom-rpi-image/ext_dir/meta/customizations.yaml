@@ -1,0 +1,21 @@
+---
+name: customizations
+mmdebstrap:
+  packages:
+    - dosfstools
+    - fdisk
+    - avahi-daemon
+    - avahi-utils
+    - firmware-brcm80211
+    - rfkill
+    - wpasupplicant
+    - network-manager
+  install-recommends: false
+  customize-hooks:
+    - $META_HOOKS/systemd/netgen wlan0 > $1/etc/systemd/network/25-wireless.network
+    - chroot $1 sh -c "useradd -m -s /bin/bash -u 4000 $IGconf_device_user1"
+    - |-
+      if [ -n "$IGconf_device_user1pass" ] ; then
+         chroot $1 sh -c "echo ${IGconf_device_user1}:${IGconf_device_user1pass} | chpasswd"
+      fi
+    - chroot $1 usermod --pass='*' root
