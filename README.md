@@ -16,9 +16,9 @@ git clone --recurse-submodules https://github.com/tradingstrategy-ai/trade-execu
 Use the Raspberry Pi Imager tool to install the img file located in deploy
 on an SD card or USB stick.
 
-**[Watch and Like the recorded video for this project on YouTube](https://www.youtube.com/watch?v=AkyDQ-naIRk)** 
+**[Watch and Like the recorded video for this project on YouTube](https://www.youtube.com/watch?v=-L_KLZIpr3A)** 
 
-[![Watch and Like the recorded video for this project on YouTube](https://img.youtube.com/vi/AkyDQ-naIRk/maxresdefault.jpg)](https://www.youtube.com/watch?v=AkyDQ-naIRk)
+[![Watch and Like the recorded video for this project on YouTube](https://img.youtube.com/vi/-L_KLZIpr3A/maxresdefault.jpg)](https://www.youtube.com/watch?v=-L_KLZIpr3A)
 
 **[Subscribe to the channel for more similar content](https://www.youtube.com/@macmind-io?sub_confirmation=1)
 
