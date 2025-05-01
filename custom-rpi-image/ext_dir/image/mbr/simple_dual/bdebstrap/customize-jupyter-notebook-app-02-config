@@ -1,0 +1,7 @@
+# Write out our systemd kiosk service
+cat ../jupyter-notebook-setup/jupyter-notebook.service.tpl | sed \
+   -e "s|<HOME_DIR>|/home/$IGconf_device_user1|g" \
+   > $1/etc/systemd/system/jupyter-notebook.service
+
+# # Enable the jupyter-notebook service so it starts automatically
+$BDEBSTRAP_HOOKS/enable-units "$1" jupyter-notebook

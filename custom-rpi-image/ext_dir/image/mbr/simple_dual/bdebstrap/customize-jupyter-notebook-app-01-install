@@ -1,0 +1,40 @@
+#!/bin/sh
+
+set -eu
+
+PYTHONDONTWRITEBYTECODE=1
+PYTHONUNBUFFERED=1
+
+# enable avahi to broadcast the hostname
+# on the local network
+#
+$BDEBSTRAP_HOOKS/enable-units "$1" avahi-daemon
+
+# # install poetry
+# #
+chroot $1 runuser -u $IGconf_device_user1 -- bash -c "pipx install poetry"
+
+# # install jupyter notebook
+# #
+chroot $1 runuser -u $IGconf_device_user1 -- bash -c "pipx install notebook"
+
+# # update and install app
+# #
+app_dir_name=jupyter-notebook-app
+git -C ~/$app_dir_name pull --recurse-submodules
+rsync -a ~/$app_dir_name $1/home/$IGconf_device_user1/
+rm -rf $1/home/$IGconf_device_user1/$app_dir_name/.git
+
+# # install app dependencies
+# #
+chroot $1 chown -R $IGconf_device_user1:$IGconf_device_user1 /home/$IGconf_device_user1/$app_dir_name
+chroot $1 runuser -u $IGconf_device_user1 -- bash -c "cd ~/$app_dir_name && ~/.local/bin/poetry install --all-extras"
+chroot $1 runuser -u $IGconf_device_user1 -- bash -c "cd ~/$app_dir_name && ~/.local/bin/poetry env use python3.11"
+chroot $1 runuser -u $IGconf_device_user1 -- bash -c "cd ~/$app_dir_name && ~/.local/bin/poetry env activate"
+
+chroot $1 runuser -u $IGconf_device_user1 -- bash -c "cd ~/$app_dir_name && ~/.local/bin/poetry run jupyter notebook --generate-config"
+
+# # set jupyter password
+# # this will required interaction during image generation
+#
+chroot $1 runuser -u $IGconf_device_user1 -- bash -c "cd ~/$app_dir_name && ~/.local/bin/poetry run jupyter server password"
